@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Doctor {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  password    String
+  firstName   String
+  lastName    String
+  specialists String
+  description String?
+  created     DateTime @default(now())
+
+  patients Patients[]
+}
+
+model Patients {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  sex       String   @default("Binary")
+  age       Int
+  appoinmentDate      DateTime?
+  message   String @db.Text
+  phoneNumber String?
+  created   DateTime @default(now())
+
+  user   Doctor   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id String @id @default(uuid())
+
+  patient   Patients @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId String
+
+  vital        Vital[]
+  consultation Consultation[]
+  diagnosis    Diagnosis[]
+  medication   Medication[]
+}
+
+model Vital {
+  id                String  @id @default(uuid())
+  glucoseBeforeMeal String?
+  temperature       String?
+  bloodPressure     String?
+  glucoseAfterMeal  String?
+  height            String?
+  weight            String?
+
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  appointmentId String
+}
+
+model Consultation {
+  id            String @id @default(uuid())
+  name          String
+  diagnosisType String
+  description   String
+
+  appointment    Appointment @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  consultationId String
+}
+
+model Diagnosis {
+  id            String @id @default(uuid())
+  name          String
+  diagnosisType String
+  description   String
+
+  appointment Appointment @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+  diagnosisId String
+}
+
+model Medication {
+  id            String @id @default(uuid())
+  name          String
+  diagnosisType String
+  description   String
+
+  appointment  Appointment @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  medicationId String
+}
