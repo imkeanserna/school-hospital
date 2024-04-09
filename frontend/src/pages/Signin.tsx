@@ -39,7 +39,7 @@ export default function Signin() {
             console.log(data.isExist)
             localStorage.setItem("doctorInfo", JSON.stringify(data.isExist))
             setTimeout(() => {
-                navigate("/")
+                navigate("/dashboard")
             }, 1000)
         } catch(error: any) {
             toast.error(error.response.data.message)

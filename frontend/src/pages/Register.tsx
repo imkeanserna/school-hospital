@@ -42,7 +42,7 @@ export default function register() {
                 }
             });
             setTimeout(() => {
-                navigate("/")
+                navigate("/dashboard")
             }, 1000)
         } catch (error: any) {
             console.log(error.response.data.message)

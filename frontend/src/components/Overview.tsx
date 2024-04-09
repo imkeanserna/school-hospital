@@ -4,7 +4,6 @@ import Patient from "./Patient";
 
 
 export default function Overview({ patients }: { patients: any }) {
-    console.log(patients)
     const [flag, setFlag] = useState(false);
     const [patient, setPatient] = useState({});
     const handlePatient = async (id: string) => {
@@ -30,7 +29,7 @@ export default function Overview({ patients }: { patients: any }) {
         {!flag ?
             <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-3 gap-6">
-                    <OverviewCard label="Appointments" amount="24" />
+                    <OverviewCard label="Appointments" amount={patients.length} />
                     <OverviewCard label="Hours" amount="1hr" />
                     <OverviewCard label="Surgey" amount="02" />
                 </div>
